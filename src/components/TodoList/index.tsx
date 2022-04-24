@@ -1,23 +1,27 @@
 import React, { FC, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { Task } from "../../types";
 import formattedDate from "../../utils/formatDate";
+import { Task } from "../../types";
 import TodoItem from "../TodoItem";
-
-import "./styles.css";
 import {
   tasksState,
   tasksFilterState,
   filteredTasksState,
   tasksStatsState,
 } from "../../store/tasksStore";
+import { Modal } from "../Modal";
+import { TextField } from "../TextField";
+import { MaskInput } from "../MaskInput";
+import "./styles.css";
 
 const TodoList: FC = () => {
   const [tasks, setTasks] = useRecoilState(tasksState);
   const [filter, setFilter] = useRecoilState(tasksFilterState);
   const filteredTasks = useRecoilValue(filteredTasksState);
   const { totalCompletedNum, totalNum } = useRecoilValue(tasksStatsState);
+  const [title, setTitle] = useState("");
+  const [modalActive, setModalActive] = useState(false);
 
   const [timer, setTimer] = useState(false);
 
@@ -26,17 +30,17 @@ const TodoList: FC = () => {
   };
 
   const createTask = () => {
-    const taskName = prompt("Введите название");
     setTasks((oldState) => [
       ...oldState,
       {
         id: 2,
-        title: taskName ?? "",
+        title,
         isComplete: false,
         isArchived: false,
         createdAt: formattedDate.dateNow(),
       },
     ]);
+    setModalActive(false);
   };
 
   const onClickArchive = (task: Task) => {
@@ -96,9 +100,21 @@ const TodoList: FC = () => {
         ))}
       </div>
       <div className="todo-list__footer">
-        <button className="todo-list__button" onClick={createTask}>
+        <button
+          className="todo-list__button"
+          onClick={() => setModalActive(true)}
+        >
           новая задача
         </button>
+
+        <Modal modalActive={modalActive} setModalActive={setModalActive}>
+          <TextField onChange={(event) => setTitle(event.target.value)} />
+          <MaskInput />
+          <button className="todo-list__button" onClick={() => createTask()}>
+            создать
+          </button>
+        </Modal>
+
         <div className="todo-list__complete">
           {totalCompletedNum} из {totalNum} задач выполнены
         </div>

@@ -1,0 +1,11 @@
+.text-field {
+  min-height: 30px;
+  width: 100%;
+}
+.text-field:hover {
+  border: 1px solid darkgray;
+}
+.text-field:active,
+.text-field:focus {
+  outline-color: darkgray;
+}
