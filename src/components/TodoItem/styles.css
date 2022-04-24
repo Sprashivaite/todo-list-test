@@ -1,0 +1,22 @@
+.todo-item {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+}
+
+.todo-item__cell {
+  border: 1px solid grey;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  padding: 0.625rem;
+  overflow: hidden;
+}
+
+.todo-item__checkbox {
+  width: 20px;
+  height: 20px;
+}
