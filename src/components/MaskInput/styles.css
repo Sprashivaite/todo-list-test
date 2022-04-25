@@ -1,0 +1,11 @@
+.mask-input {
+  min-height: 30px;
+  width: 100%;
+}
+.mask-input:hover {
+  border: 1px solid darkgray;
+}
+.mask-input:active,
+.mask-input:focus {
+  outline-color: darkgray;
+}

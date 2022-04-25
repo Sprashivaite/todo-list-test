@@ -1,0 +1,25 @@
+.todo-table-head {
+  border: 1px solid grey;
+  background-color: #e0e0cb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  padding: 0.625rem;
+  overflow: hidden;
+}
+
+.todo-table-head__button {
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  transform: rotateX(0deg);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.todo-table-head__button_active {
+  transform: rotateX(180deg);
+}

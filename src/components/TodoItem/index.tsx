@@ -1,35 +1,36 @@
 import React, { ChangeEventHandler, FC, MouseEventHandler } from "react";
 
 import { Task } from "../../types";
+import { TodoCell } from "../TodoCell";
 import archive from "./img/archive.svg";
 import "./styles.css";
 
 type TodoItemProps = {
   task: Task;
   onClickArchive: MouseEventHandler<HTMLInputElement>;
-  onChangeCheckbox: ChangeEventHandler<HTMLInputElement>;
+  onChangeComplete: ChangeEventHandler<HTMLInputElement>;
 };
 
 const TodoItem: FC<TodoItemProps> = ({
   task,
   onClickArchive,
-  onChangeCheckbox,
+  onChangeComplete,
 }) => {
   const { title, createdAt, isComplete } = task;
 
   return (
-    <div className="todo-item">
-      <div className="todo-item__cell">{title}</div>
-      <div className="todo-item__cell">{createdAt}</div>
-      <div className="todo-item__cell">
+    <tr className="todo-item">
+      <TodoCell>{title}</TodoCell>
+      <TodoCell>{createdAt}</TodoCell>
+      <TodoCell>
         <input
-          className="todo-item__checkbox"
+          className="todo-item__complete"
           type="checkbox"
           checked={isComplete}
-          onChange={onChangeCheckbox}
+          onChange={onChangeComplete}
         />
-      </div>
-      <div className="todo-item__cell">
+      </TodoCell>
+      <TodoCell>
         <input
           className="todo-item__archive"
           type="image"
@@ -37,8 +38,8 @@ const TodoItem: FC<TodoItemProps> = ({
           alt="archive"
           onClick={onClickArchive}
         />
-      </div>
-    </div>
+      </TodoCell>
+    </tr>
   );
 };
 

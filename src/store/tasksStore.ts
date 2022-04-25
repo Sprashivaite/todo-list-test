@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 
 import data from "../data.json";
+import { SortingType } from "../types";
 
 export const tasksState = atom({
   key: "Tasks",
@@ -10,6 +11,11 @@ export const tasksState = atom({
 export const tasksFilterState = atom({
   key: "TasksFilter",
   default: "",
+});
+
+export const tasksSortingState = atom({
+  key: "TasksSorting",
+  default: SortingType.DateDesc,
 });
 
 export const filteredTasksState = selector({

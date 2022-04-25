@@ -2,11 +2,22 @@ import IMask from "imask";
 import { FC } from "react";
 import { IMaskInput } from "react-imask";
 
-export const MaskInput: FC = () => {
+import "./styles.css";
+
+interface Props {
+  value: string | number | readonly string[] | undefined;
+  onChange: (value: string) => void;
+}
+
+export const MaskInput: FC<Props> = ({ value, onChange }) => {
+  const momentFormat = "YYYY-MM-DD";
   return (
     <IMaskInput
-      mask={Date}
-      pattern="YYYY-MM-DD HH:mm"
+      mask={momentFormat}
+      value={value}
+      onAccept={(value) => onChange(String(value))}
+      className="mask-input"
+      placeholder="Дата"
       blocks={{
         YYYY: {
           mask: IMask.MaskedRange,
@@ -22,16 +33,6 @@ export const MaskInput: FC = () => {
           mask: IMask.MaskedRange,
           from: 1,
           to: 31,
-        },
-        HH: {
-          mask: IMask.MaskedRange,
-          from: 0,
-          to: 23,
-        },
-        mm: {
-          mask: IMask.MaskedRange,
-          from: 0,
-          to: 59,
         },
       }}
     />

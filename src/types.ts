@@ -5,3 +5,10 @@ export type Task = {
   isComplete: boolean;
   isArchived?: boolean;
 };
+
+export enum SortingType {
+  TitleAsc = "TitleAsc",
+  TitleDesc = "TitleDesc",
+  DateAsc = "DateAsc",
+  DateDesc = "DateDesc",
+}

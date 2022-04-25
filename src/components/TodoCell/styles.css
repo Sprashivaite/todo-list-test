@@ -1,10 +1,4 @@
-.todo-item {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: 2fr 2fr 1fr 1fr;
-}
-
-.todo-item__cell {
+.todo-cell {
   border: 1px solid grey;
   background-color: #e0e0cb;
   display: flex;
@@ -14,9 +8,4 @@
   font-weight: 500;
   padding: 0.625rem;
   overflow: hidden;
-}
-
-.todo-item__checkbox {
-  width: 20px;
-  height: 20px;
 }
