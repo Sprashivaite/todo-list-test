@@ -1,19 +1,18 @@
-import IMask from "imask";
 import { FC } from "react";
+import IMask from "imask";
 import { IMaskInput } from "react-imask";
 
 import "./styles.css";
 
 interface Props {
-  value: string | number | readonly string[] | undefined;
+  value: string;
   onChange: (value: string) => void;
 }
 
 export const MaskInput: FC<Props> = ({ value, onChange }) => {
-  const momentFormat = "YYYY-MM-DD";
   return (
     <IMaskInput
-      mask={momentFormat}
+      mask="YYYY-MM-DD"
       value={value}
       onAccept={(value) => onChange(String(value))}
       className="mask-input"

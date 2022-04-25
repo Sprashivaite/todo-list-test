@@ -1,0 +1,7 @@
+.search-input {
+  height: 45px;
+  font-size: 22px;
+  background-color: #e0e0cb;
+  outline-color: #b5ac80;
+  flex-grow: 1;
+}

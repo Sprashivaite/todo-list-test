@@ -1,52 +1,34 @@
 import { ChangeEvent, FC, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import moment from "moment";
 
-import { SortingType, Task } from "../../types";
-import TodoItem from "../TodoItem";
+import { useInterval } from "../../hooks/useInterval";
+import { TitleSortingType, DateSortingType, Task } from "../../types";
 import {
   tasksState,
   tasksFilterState,
   filteredTasksState,
   tasksStatsState,
 } from "../../store/tasksStore";
-import { Modal } from "../Modal";
-import { TextField } from "../TextField";
-import { MaskInput } from "../MaskInput";
-import "./styles.css";
-import { useInterval } from "../../hooks/useInterval";
+import TodoItem from "../TodoItem";
 import { TodoTableHead } from "../TodoTableHead";
-import moment from "moment";
+import { TableFooter } from "../TableFooter";
+import { AddTaskModal } from "../AddTaskModal";
+import { SearchInput } from "../SearchInput";
+import "./styles.css";
 
 const TodoList: FC = () => {
   const setTasks = useSetRecoilState(tasksState);
   const [filter, setFilter] = useRecoilState(tasksFilterState);
   const filteredTasks = useRecoilValue(filteredTasksState);
   const { totalCompletedNum, totalNum } = useRecoilValue(tasksStatsState);
-  const [title, setTitle] = useState("");
-  const [titleSort, setTitleSort] = useState(SortingType.TitleDesc);
-  const [dateSort, setDateSort] = useState(SortingType.DateDesc);
-  const [modalActive, setModalActive] = useState(false);
-  const [date, setDate] = useState("");
+
+  const [titleSort, setTitleSort] = useState(TitleSortingType.TitleDesc);
+  const [dateSort, setDateSort] = useState(DateSortingType.DateDesc);
   const [timer, setTimer] = useState(false);
 
   const onChangeFilter = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
-  };
-
-  const createTask = () => {
-    setTasks((oldState) => [
-      ...oldState,
-      {
-        id: Date.now(),
-        title,
-        isComplete: false,
-        isArchived: false,
-        createdAt: date,
-      },
-    ]);
-    setModalActive(false);
-    setDate("");
-    setTitle("");
   };
 
   const handleArchiveClick = (task: Task) => {
@@ -76,7 +58,7 @@ const TodoList: FC = () => {
   };
 
   const handleTitleSort = () => {
-    if (titleSort === SortingType.TitleAsc) {
+    if (titleSort === TitleSortingType.TitleAsc) {
       setTasks((oldState) =>
         oldState.slice().sort((a, b) => {
           const titleA = a.title.toLowerCase();
@@ -86,9 +68,9 @@ const TodoList: FC = () => {
           return 0;
         })
       );
-      setTitleSort(SortingType.TitleDesc);
+      setTitleSort(TitleSortingType.TitleDesc);
     }
-    if (titleSort === SortingType.TitleDesc) {
+    if (titleSort === TitleSortingType.TitleDesc) {
       setTasks((oldState) =>
         oldState.slice().sort((a, b) => {
           const titleA = a.title.toLowerCase();
@@ -98,12 +80,12 @@ const TodoList: FC = () => {
           return 0;
         })
       );
-      setTitleSort(SortingType.TitleAsc);
+      setTitleSort(TitleSortingType.TitleAsc);
     }
   };
 
   const handleDateSort = () => {
-    if (dateSort === SortingType.DateAsc) {
+    if (dateSort === DateSortingType.DateAsc) {
       setTasks((oldState) =>
         oldState.slice().sort((a, b) => {
           const dateA = moment(a.createdAt);
@@ -113,13 +95,14 @@ const TodoList: FC = () => {
 
           if (dateB.isAfter(dateA)) return -1;
           if (dateA.isAfter(dateB)) return 1;
-          if (dateA.isSame(dateB)) return 0;
-          return 0;
+          else {
+            return 0;
+          }
         })
       );
-      setDateSort(SortingType.DateDesc);
+      setDateSort(DateSortingType.DateDesc);
     }
-    if (dateSort === SortingType.DateDesc) {
+    if (dateSort === DateSortingType.DateDesc) {
       setTasks((oldState) =>
         oldState.slice().sort((a, b) => {
           const dateA = moment(a.createdAt);
@@ -127,11 +110,12 @@ const TodoList: FC = () => {
 
           if (dateB.isAfter(dateA)) return 1;
           if (dateA.isAfter(dateB)) return -1;
-          if (dateA.isSame(dateB)) return 0;
-          return 0;
+          else {
+            return 0;
+          }
         })
       );
-      setDateSort(SortingType.DateAsc);
+      setDateSort(DateSortingType.DateAsc);
     }
   };
 
@@ -146,33 +130,8 @@ const TodoList: FC = () => {
   return (
     <div className="todo-list">
       <div className="todo-list__toolbar">
-        <input
-          className="todo-list__search"
-          type="search"
-          placeholder="search"
-          value={filter}
-          onChange={onChangeFilter}
-        />
-        <button
-          className="todo-list__button"
-          onClick={() => setModalActive(true)}
-        >
-          новая задача
-        </button>
-
-        <Modal modalActive={modalActive} setModalActive={setModalActive}>
-          <div className="todo-list__modal-container">
-            <h2>Добавить задачу</h2>
-            <TextField
-              placeholder="Название"
-              onChange={(event) => setTitle(event.target.value)}
-            />
-            <MaskInput value={date} onChange={(value) => setDate(value)} />
-            <button className="todo-list__button" onClick={() => createTask()}>
-              создать
-            </button>
-          </div>
-        </Modal>
+        <SearchInput value={filter} onChange={onChangeFilter} />
+        <AddTaskModal />
       </div>
       <table className="todo-list__table">
         <thead>
@@ -192,18 +151,15 @@ const TodoList: FC = () => {
             <TodoItem
               task={task}
               key={task.id}
-              onClickArchive={handleArchiveClick.bind(this, task)}
-              onChangeComplete={handleCompleteClick.bind(this, task)}
+              onClickArchive={() => handleArchiveClick(task)}
+              onChangeComplete={() => handleCompleteClick(task)}
             ></TodoItem>
           ))}
         </tbody>
-        <tfoot className="todo-list__footer">
-          <tr className="todo-list__complete">
-            <td>
-              {totalCompletedNum} из {totalNum} задач выполнены
-            </td>
-          </tr>
-        </tfoot>
+        <TableFooter
+          totalCompletedNum={totalCompletedNum}
+          totalNum={totalNum}
+        />
       </table>
     </div>
   );

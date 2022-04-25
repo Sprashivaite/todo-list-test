@@ -1,0 +1,9 @@
+.table-footer {
+  display: flex;
+  background-color: #e0e0cb;
+}
+
+.table-footer__complete {
+  margin: 10px 10px 10px auto;
+  font-size: 1.375rem;
+}

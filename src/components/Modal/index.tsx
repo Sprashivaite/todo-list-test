@@ -1,10 +1,10 @@
-import { Dispatch, FC, ReactNode } from "react";
+import { Dispatch, FC, ReactNode, SetStateAction } from "react";
 
 import "./styles.css";
 
 interface Props {
   modalActive: boolean;
-  setModalActive: Dispatch<React.SetStateAction<boolean>>;
+  setModalActive: Dispatch<SetStateAction<boolean>>;
   children?: ReactNode;
 }
 

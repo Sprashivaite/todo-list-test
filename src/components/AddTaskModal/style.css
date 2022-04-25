@@ -1,0 +1,13 @@
+.task-modal__button {
+  margin-left: 40px;
+  padding: 0.625rem 1.25rem;
+  font-size: 1.25rem;
+}
+
+.task-modal__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}

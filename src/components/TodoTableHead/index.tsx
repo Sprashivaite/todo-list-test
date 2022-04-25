@@ -15,7 +15,6 @@ export const TodoTableHead: FC<Props> = ({
   children,
 }) => {
   const [isArrowDirectionUp, setIsArrowDirectionUp] = useState(false);
-  const [isArrowDisabled, setIsArrowDisabled] = useState(false);
 
   const handleButtonClick = () => {
     onButtonClick && onButtonClick();
@@ -32,7 +31,6 @@ export const TodoTableHead: FC<Props> = ({
               ? "todo-table-head__button"
               : "todo-table-head__button todo-table-head__button_active"
           }
-          disabled={isArrowDisabled}
           onClick={handleButtonClick}
         >
           <ArrowDownwardIcon />
