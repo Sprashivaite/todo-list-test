@@ -16,7 +16,28 @@
   overflow: hidden;
 }
 
-.todo-item__checkbox {
+.todo-item__complete {
   width: 20px;
   height: 20px;
+}
+
+.todo-item__archive {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.todo-item__modal-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-item__modal-button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.todo-item__modal-button {
+  height: 30px;
 }

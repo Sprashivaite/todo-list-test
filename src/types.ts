@@ -7,11 +7,11 @@ export type Task = {
 };
 
 export enum TitleSortingType {
-  TitleAsc = "TitleAsc",
-  TitleDesc = "TitleDesc",
+  Asc = "Asc",
+  Desc = "Desc",
 }
 
 export enum DateSortingType {
-  DateAsc = "DateAsc",
-  DateDesc = "DateDesc",
+  Asc = "Asc",
+  Desc = "Desc",
 }

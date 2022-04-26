@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import moment from "moment";
+import { compareDesc } from "date-fns";
 
 import { useInterval } from "../../hooks/useInterval";
 import { TitleSortingType, DateSortingType, Task } from "../../types";
@@ -10,10 +10,10 @@ import {
   filteredTasksState,
   tasksStatsState,
 } from "../../store/tasksStore";
-import TodoItem from "../TodoItem";
-import { TodoTableHead } from "../TodoTableHead";
-import { TableFooter } from "../TableFooter";
-import { AddTaskModal } from "../AddTaskModal";
+import TodoItem from "./components/TodoItem";
+import { TodoTableHead } from "./components/TodoTableHead";
+import { TableFooter } from "./components/TableFooter";
+import { AddTaskModal } from "./components/AddTaskModal";
 import { SearchInput } from "../SearchInput";
 import "./styles.css";
 
@@ -23,8 +23,8 @@ const TodoList: FC = () => {
   const filteredTasks = useRecoilValue(filteredTasksState);
   const { totalCompletedNum, totalNum } = useRecoilValue(tasksStatsState);
 
-  const [titleSort, setTitleSort] = useState(TitleSortingType.TitleDesc);
-  const [dateSort, setDateSort] = useState(DateSortingType.DateDesc);
+  const [titleSort, setTitleSort] = useState(TitleSortingType.Desc);
+  const [dateSort, setDateSort] = useState(DateSortingType.Desc);
   const [timer, setTimer] = useState(false);
 
   const onChangeFilter = (event: ChangeEvent<HTMLInputElement>) => {
@@ -58,73 +58,43 @@ const TodoList: FC = () => {
   };
 
   const handleTitleSort = () => {
-    if (titleSort === TitleSortingType.TitleAsc) {
+    if (titleSort === TitleSortingType.Asc) {
       setTasks((oldState) =>
-        oldState.slice().sort((a, b) => {
-          const titleA = a.title.toLowerCase();
-          const titleB = b.title.toLowerCase();
-          if (titleA < titleB) return -1;
-          if (titleA > titleB) return 1;
-          return 0;
-        })
+        [...oldState].sort((a, b) => a.title.localeCompare(b.title))
       );
-      setTitleSort(TitleSortingType.TitleDesc);
+      setTitleSort(TitleSortingType.Desc);
     }
-    if (titleSort === TitleSortingType.TitleDesc) {
+    if (titleSort === TitleSortingType.Desc) {
       setTasks((oldState) =>
-        oldState.slice().sort((a, b) => {
-          const titleA = a.title.toLowerCase();
-          const titleB = b.title.toLowerCase();
-          if (titleA < titleB) return 1;
-          if (titleA > titleB) return -1;
-          return 0;
-        })
+        [...oldState].sort((a, b) => b.title.localeCompare(a.title))
       );
-      setTitleSort(TitleSortingType.TitleAsc);
+      setTitleSort(TitleSortingType.Asc);
     }
   };
 
   const handleDateSort = () => {
-    if (dateSort === DateSortingType.DateAsc) {
+    if (dateSort === DateSortingType.Asc) {
       setTasks((oldState) =>
-        oldState.slice().sort((a, b) => {
-          const dateA = moment(a.createdAt);
-          const dateB = moment(b.createdAt);
-          console.log(dateA, dateB);
-          console.log(dateB.isAfter(dateA));
-
-          if (dateB.isAfter(dateA)) return -1;
-          if (dateA.isAfter(dateB)) return 1;
-          else {
-            return 0;
-          }
-        })
+        [...oldState].sort((a, b) =>
+          compareDesc(new Date(a.createdAt), new Date(b.createdAt))
+        )
       );
-      setDateSort(DateSortingType.DateDesc);
+      setDateSort(DateSortingType.Desc);
     }
-    if (dateSort === DateSortingType.DateDesc) {
+    if (dateSort === DateSortingType.Desc) {
       setTasks((oldState) =>
-        oldState.slice().sort((a, b) => {
-          const dateA = moment(a.createdAt);
-          const dateB = moment(b.createdAt);
-
-          if (dateB.isAfter(dateA)) return 1;
-          if (dateA.isAfter(dateB)) return -1;
-          else {
-            return 0;
-          }
-        })
+        [...oldState].sort((a, b) =>
+          compareDesc(new Date(b.createdAt), new Date(a.createdAt))
+        )
       );
-      setDateSort(DateSortingType.DateAsc);
+      setDateSort(DateSortingType.Asc);
     }
   };
 
   const tick = () => {
     setTimer(!timer);
   };
-
   const tenSeconds = 10 * 1000;
-
   useInterval(tick, tenSeconds);
 
   return (

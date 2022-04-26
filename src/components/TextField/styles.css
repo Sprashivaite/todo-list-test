@@ -1,6 +1,7 @@
 .text-field {
   min-height: 30px;
-  width: 100%;
+  padding: 14px;
+  border: 1px solid #9e5e55;
 }
 
 .text-field:hover {

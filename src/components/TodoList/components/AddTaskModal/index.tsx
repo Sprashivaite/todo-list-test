@@ -1,13 +1,14 @@
 import { FormApi } from "final-form";
-import { makeValidateSync, TextField } from "mui-rff";
+import { makeValidateSync } from "mui-rff";
 import { FC, useState } from "react";
 import { Field, Form } from "react-final-form";
 import { useSetRecoilState } from "recoil";
 import * as yup from "yup";
 
-import { tasksState } from "../../store/tasksStore";
-import { MaskInput } from "../MaskInput";
-import { Modal } from "../Modal";
+import { tasksState } from "../../../../store/tasksStore";
+import { MaskInput } from "../../../MaskInput";
+import { Modal } from "../../../Modal";
+import { TextField } from "../../../TextField";
 import "./style.css";
 
 interface FormValues {
@@ -61,19 +62,36 @@ export const AddTaskModal: FC = () => {
             <form onSubmit={handleSubmit}>
               <div className="task-modal__container">
                 <h2>Добавить задачу</h2>
-                <TextField name="title" placeholder="Название" />
+                <Field
+                  name="title"
+                  render={({
+                    input: { onChange, value },
+                    meta: { error, invalid, touched },
+                  }) => (
+                    <>
+                      <TextField
+                        value={value}
+                        onChange={(value) => onChange(value)}
+                        placeholder="Название"
+                      />
+                      {invalid && (
+                        <span className="task-modal__error">{error}</span>
+                      )}
+                    </>
+                  )}
+                />
                 <Field
                   name="date"
                   render={({
                     input: { onChange, value },
-                    meta: { error, invalid, pristine },
+                    meta: { error, invalid, touched },
                   }) => (
                     <>
                       <MaskInput
                         value={value}
                         onChange={(value) => onChange(value)}
                       />
-                      {invalid && pristine && (
+                      {invalid && (
                         <span className="task-modal__error">{error}</span>
                       )}
                     </>
