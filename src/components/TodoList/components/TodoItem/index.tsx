@@ -3,9 +3,9 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import moment from "moment";
 
 import { Task } from "../../../../types";
+import { Modal } from "../../../Modal";
 import { TodoCell } from "../TodoCell";
 import "./styles.css";
-import { Modal } from "../../../Modal";
 
 type TodoItemProps = {
   task: Task;

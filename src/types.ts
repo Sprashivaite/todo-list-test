@@ -6,12 +6,7 @@ export type Task = {
   isArchived?: boolean;
 };
 
-export enum TitleSortingType {
-  Asc = "Asc",
-  Desc = "Desc",
-}
-
-export enum DateSortingType {
+export enum SortingType {
   Asc = "Asc",
   Desc = "Desc",
 }

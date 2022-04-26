@@ -7,14 +7,12 @@ interface Props {
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-export const SearchInput: FC<Props> = ({ value, onChange }) => {
-  return (
-    <input
-      className="search-input"
-      type="search"
-      placeholder="Поиск"
-      value={value}
-      onChange={onChange}
-    />
-  );
-};
+export const SearchInput: FC<Props> = ({ value, onChange }) => (
+  <input
+    className="search-input"
+    type="search"
+    placeholder="Поиск"
+    value={value}
+    onChange={onChange}
+  />
+);

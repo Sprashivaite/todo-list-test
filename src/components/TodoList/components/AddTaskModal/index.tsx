@@ -6,7 +6,7 @@ import { useSetRecoilState } from "recoil";
 import * as yup from "yup";
 
 import { tasksState } from "../../../../store/tasksStore";
-import { MaskInput } from "../../../MaskInput";
+import { DateMaskInput } from "../../../DateMaskInput";
 import { Modal } from "../../../Modal";
 import { TextField } from "../../../TextField";
 import "./style.css";
@@ -19,7 +19,10 @@ interface FormValues {
 const makeValidationSchema = (): yup.SchemaOf<FormValues> =>
   yup.object().shape({
     title: yup.string().required("Обязательное поле"),
-    date: yup.string().length(10).required("Обязательное поле"),
+    date: yup
+      .string()
+      .length(10, "Значение не заполнено")
+      .required("Обязательное поле"),
   });
 
 const validateForm = makeValidateSync(makeValidationSchema());
@@ -47,7 +50,7 @@ export const AddTaskModal: FC = () => {
   };
 
   return (
-    <>
+    <div>
       <button
         className="task-modal__button"
         onClick={() => setModalActive(true)}
@@ -62,11 +65,12 @@ export const AddTaskModal: FC = () => {
             <form onSubmit={handleSubmit}>
               <div className="task-modal__container">
                 <h2>Добавить задачу</h2>
+
                 <Field
                   name="title"
                   render={({
                     input: { onChange, value },
-                    meta: { error, invalid, touched },
+                    meta: { error, invalid },
                   }) => (
                     <>
                       <TextField
@@ -80,14 +84,15 @@ export const AddTaskModal: FC = () => {
                     </>
                   )}
                 />
+
                 <Field
                   name="date"
                   render={({
                     input: { onChange, value },
-                    meta: { error, invalid, touched },
+                    meta: { error, invalid },
                   }) => (
                     <>
-                      <MaskInput
+                      <DateMaskInput
                         value={value}
                         onChange={(value) => onChange(value)}
                       />
@@ -97,12 +102,13 @@ export const AddTaskModal: FC = () => {
                     </>
                   )}
                 />
+
                 <button className="task-modal__button">Создать</button>
               </div>
             </form>
           )}
         />
       </Modal>
-    </>
+    </div>
   );
 };

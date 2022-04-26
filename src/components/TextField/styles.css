@@ -4,11 +4,8 @@
   border: 1px solid #9e5e55;
 }
 
+.text-field:active,
+.text-field:focus,
 .text-field:hover {
   border: 1px solid darkgray;
-}
-
-.text-field:active,
-.text-field:focus {
-  outline-color: darkgray;
 }

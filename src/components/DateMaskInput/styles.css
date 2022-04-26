@@ -1,15 +1,12 @@
-.mask-input {
+.date-mask-input {
   min-height: 30px;
   border-radius: 7px;
   padding: 14px;
   border: 1px solid #9e5e55;
 }
 
-.mask-input:hover {
+.date-mask-input:active,
+.date-mask-input:focus,
+.date-mask-input:hover {
   border: 1px solid darkgray;
-}
-
-.mask-input:active,
-.mask-input:focus {
-  outline-color: darkgray;
 }

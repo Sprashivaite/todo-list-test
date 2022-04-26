@@ -7,6 +7,6 @@ type Props = DetailedHTMLProps<
   HTMLInputElement
 >;
 
-export const TextField: FC<Props> = (props) => {
-  return <input className="text-field" {...props}></input>;
-};
+export const TextField: FC<Props> = (props) => (
+  <input className="text-field" {...props}></input>
+);

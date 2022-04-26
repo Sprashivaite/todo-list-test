@@ -13,7 +13,7 @@ export const tasksFilterState = atom({
 });
 
 export const filteredTasksState = selector({
-  key: "FilteredTasksFilter",
+  key: "FilteredTasks",
   get: ({ get }) => {
     const filter = get(tasksFilterState);
     const list = get(tasksState);

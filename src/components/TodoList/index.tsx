@@ -3,18 +3,18 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { compareDesc } from "date-fns";
 
 import { useInterval } from "../../hooks/useInterval";
-import { TitleSortingType, DateSortingType, Task } from "../../types";
+import { SortingType, Task } from "../../types";
 import {
   tasksState,
   tasksFilterState,
   filteredTasksState,
   tasksStatsState,
 } from "../../store/tasksStore";
+import { SearchInput } from "../SearchInput";
 import TodoItem from "./components/TodoItem";
 import { TodoTableHead } from "./components/TodoTableHead";
 import { TableFooter } from "./components/TableFooter";
 import { AddTaskModal } from "./components/AddTaskModal";
-import { SearchInput } from "../SearchInput";
 import "./styles.css";
 
 const TodoList: FC = () => {
@@ -23,8 +23,8 @@ const TodoList: FC = () => {
   const filteredTasks = useRecoilValue(filteredTasksState);
   const { totalCompletedNum, totalNum } = useRecoilValue(tasksStatsState);
 
-  const [titleSort, setTitleSort] = useState(TitleSortingType.Desc);
-  const [dateSort, setDateSort] = useState(DateSortingType.Desc);
+  const [titleSortType, setTitleSortType] = useState(SortingType.Desc);
+  const [dateSortType, setDateSortType] = useState(SortingType.Desc);
   const [timer, setTimer] = useState(false);
 
   const onChangeFilter = (event: ChangeEvent<HTMLInputElement>) => {
@@ -57,37 +57,37 @@ const TodoList: FC = () => {
     );
   };
 
-  const handleTitleSort = () => {
-    if (titleSort === TitleSortingType.Asc) {
+  const handleTitleSortType = () => {
+    if (titleSortType === SortingType.Asc) {
       setTasks((oldState) =>
         [...oldState].sort((a, b) => a.title.localeCompare(b.title))
       );
-      setTitleSort(TitleSortingType.Desc);
+      setTitleSortType(SortingType.Desc);
     }
-    if (titleSort === TitleSortingType.Desc) {
+    if (titleSortType === SortingType.Desc) {
       setTasks((oldState) =>
         [...oldState].sort((a, b) => b.title.localeCompare(a.title))
       );
-      setTitleSort(TitleSortingType.Asc);
+      setTitleSortType(SortingType.Asc);
     }
   };
 
-  const handleDateSort = () => {
-    if (dateSort === DateSortingType.Asc) {
+  const handleDateSortType = () => {
+    if (dateSortType === SortingType.Asc) {
       setTasks((oldState) =>
         [...oldState].sort((a, b) =>
           compareDesc(new Date(a.createdAt), new Date(b.createdAt))
         )
       );
-      setDateSort(DateSortingType.Desc);
+      setDateSortType(SortingType.Desc);
     }
-    if (dateSort === DateSortingType.Desc) {
+    if (dateSortType === SortingType.Desc) {
       setTasks((oldState) =>
         [...oldState].sort((a, b) =>
           compareDesc(new Date(b.createdAt), new Date(a.createdAt))
         )
       );
-      setDateSort(DateSortingType.Asc);
+      setDateSortType(SortingType.Asc);
     }
   };
 
@@ -106,10 +106,10 @@ const TodoList: FC = () => {
       <table className="todo-list__table">
         <thead>
           <tr className="todo-list__head">
-            <TodoTableHead withButton onButtonClick={() => handleTitleSort()}>
+            <TodoTableHead withButton onButtonClick={handleTitleSortType}>
               Название
             </TodoTableHead>
-            <TodoTableHead withButton onButtonClick={() => handleDateSort()}>
+            <TodoTableHead withButton onButtonClick={handleDateSortType}>
               Дата
             </TodoTableHead>
             <TodoTableHead>Выполнено</TodoTableHead>
@@ -117,7 +117,7 @@ const TodoList: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredTasks.map((task: any) => (
+          {filteredTasks.map((task: Task) => (
             <TodoItem
               task={task}
               key={task.id}
