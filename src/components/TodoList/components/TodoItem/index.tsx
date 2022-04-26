@@ -1,11 +1,13 @@
 import { ChangeEventHandler, FC, MouseEventHandler, useState } from "react";
 import ArchiveIcon from "@mui/icons-material/Archive";
-import moment from "moment";
 
+import { dateFormat } from "../../../../consts";
 import { Task } from "../../../../types";
 import { Modal } from "../../../Modal";
 import { TodoCell } from "../TodoCell";
 import "./styles.css";
+import { formatDistance, parse } from "date-fns";
+import ruLocale from "date-fns/locale/ru";
 
 type TodoItemProps = {
   task: Task;
@@ -20,7 +22,11 @@ const TodoItem: FC<TodoItemProps> = ({
 }) => {
   const [modalActive, setModalActive] = useState(false);
   const { title, createdAt, isComplete } = task;
-  const fromNow = moment(createdAt).fromNow();
+  const date = parse(createdAt, dateFormat, new Date());
+  const fromNow = formatDistance(date, new Date(), {
+    addSuffix: true,
+    locale: ruLocale,
+  });
 
   return (
     <tr className="todo-item">

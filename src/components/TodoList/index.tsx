@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { compareDesc } from "date-fns";
+import { compareDesc, parse } from "date-fns";
 
 import { useInterval } from "../../hooks/useInterval";
 import { SortingType, Task } from "../../types";
@@ -11,6 +11,7 @@ import {
   tasksStatsState,
 } from "../../store/tasksStore";
 import { SearchInput } from "../SearchInput";
+import { dateFormat } from "../../consts";
 import TodoItem from "./components/TodoItem";
 import { TodoTableHead } from "./components/TodoTableHead";
 import { TableFooter } from "./components/TableFooter";
@@ -76,7 +77,10 @@ const TodoList: FC = () => {
     if (dateSortType === SortingType.Asc) {
       setTasks((oldState) =>
         [...oldState].sort((a, b) =>
-          compareDesc(new Date(a.createdAt), new Date(b.createdAt))
+          compareDesc(
+            parse(a.createdAt, dateFormat, new Date()),
+            parse(b.createdAt, dateFormat, new Date())
+          )
         )
       );
       setDateSortType(SortingType.Desc);
@@ -84,7 +88,10 @@ const TodoList: FC = () => {
     if (dateSortType === SortingType.Desc) {
       setTasks((oldState) =>
         [...oldState].sort((a, b) =>
-          compareDesc(new Date(b.createdAt), new Date(a.createdAt))
+          compareDesc(
+            parse(b.createdAt, dateFormat, new Date()),
+            parse(a.createdAt, dateFormat, new Date())
+          )
         )
       );
       setDateSortType(SortingType.Asc);

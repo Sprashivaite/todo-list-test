@@ -2,6 +2,7 @@ import { FC } from "react";
 import IMask from "imask";
 import { IMaskInput } from "react-imask";
 
+import { dateFormat } from "../../consts";
 import "./styles.css";
 
 interface Props {
@@ -11,24 +12,27 @@ interface Props {
 
 export const DateMaskInput: FC<Props> = ({ value, onChange }) => (
   <IMaskInput
-    mask="YYYY-MM-DD"
+    mask={dateFormat}
     value={value}
     onAccept={(value) => onChange(String(value))}
     className="date-mask-input"
-    placeholder="Дата"
+    lazy={false}
     blocks={{
-      YYYY: {
+      yyyy: {
         mask: IMask.MaskedRange,
+        placeholderChar: "Г",
         from: 1970,
         to: new Date().getFullYear(),
       },
       MM: {
         mask: IMask.MaskedRange,
+        placeholderChar: "М",
         from: 1,
         to: 12,
       },
-      DD: {
+      dd: {
         mask: IMask.MaskedRange,
+        placeholderChar: "Д",
         from: 1,
         to: 31,
       },
